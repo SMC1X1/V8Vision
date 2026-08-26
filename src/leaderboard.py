@@ -5,7 +5,7 @@ from subprocess import run
 from threading import Thread, Event
 from src import config, replay
 
-def main(live, race_id):
+def main(live, race_id, lap_option):
     series_id = {
         1: "Cup Series",
         2: "O'Reily Auto Parts Series",
@@ -25,7 +25,7 @@ def main(live, race_id):
     if not live:
         replay_thread = Thread(
             target=replay.main,
-            args=(stop_event, race_id),
+            args=(stop_event, race_id, lap_option),
             daemon=True
         )
         replay_thread.start()

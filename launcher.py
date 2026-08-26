@@ -1,5 +1,6 @@
 from subprocess import run
 from os import listdir, makedirs
+from os.path import exists
 import json
 from src import leaderboard, record, recon
 
@@ -23,13 +24,13 @@ def main():
                 f"\n"
             )
 
-            option = int(input("               Choose an option: "))
+            option = input("               Choose an option: ")
 
-            if option == 1:
+            if option == "1":
                 run("title V8Vision Live", shell=True)
-                leaderboard.main(True, None)
+                leaderboard.main(True, None, None)
 
-            elif option == 2:
+            elif option == "2":
                 run("title V8Vision Replay & cls", shell=True)
                 makedirs("replay", exist_ok=True)
                 recordings = {}
@@ -58,10 +59,28 @@ def main():
                         race_id = recordings[replay_option]["race_id"]
                     except:
                         break
-                    leaderboard.main(False, race_id)
+                    max_count = 0
+                    for filename in listdir(f"replay/{race_id}/live-feed"):
+                        number = filename.removeprefix("live-feed").removesuffix(".json")
+                        if number.isdigit():
+                            count = int(number)
+                            if count > max_count:
+                                max_count = count
+                    try:
+                        lap_option = int(input("\nStarting Lap: "))
+                        for count in range(1, max_count):
+                            if exists(f"replay/{race_id}/live-feed/live-feed{count}.json"):
+                                with open(f"replay/{race_id}/live-feed/live-feed{count}.json") as file:
+                                    data = json.load(file)
+                                if lap_option <= data["lap_number"]:
+                                    lap_option = count
+                                    break
+                    except:
+                        break
+                    leaderboard.main(False, race_id, lap_option)
                     break
 
-            elif option == 3:
+            elif option == "3":
                 run("title V8Vision Record & cls", shell=True)
                 print("\nThis will overwrite any current recordings of the current race. ")
                 overwrite = input("\nEnter Y to continue: ")
@@ -71,7 +90,7 @@ def main():
                 else:
                     main()
 
-            elif option == 4:
+            elif option == "4":
                 run("title V8Vision Recon & cls", shell=True)
                 recon.main()
                 

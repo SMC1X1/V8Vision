@@ -3,9 +3,9 @@ from shutil import copyfile
 from os.path import exists
 from src import config
 
-def main(stop_event, race_id):
+def main(stop_event, race_id, lap_option):
 
-    count = 1
+    count = lap_option
     next_check = monotonic()
 
     while not stop_event.is_set():
