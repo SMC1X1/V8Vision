@@ -37,10 +37,12 @@ Checks for changes in the feeds without downloading. [Developmental Tool]
 
 ## Version History
 
+### v0.3
+   * Overhaul of code structure and formatting within each file.
+   * Replay leaderboard waits for the replay thread to start.
+
 ### v0.2
-   * Features
-      * Option to choose starting replay lap.
-  * Fixes
-      * Crash on invalid menu input.
+   * Option to choose starting replay lap.
+
 ### v0.1
    * Initial Release
