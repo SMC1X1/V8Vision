@@ -2,26 +2,29 @@ import requests
 from time import monotonic
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor
+from os import makedirs
 
 from src import config
 
 
 def main():
-    with open("recon_log.txt", "w"):
+    makedirs("logs", exist_ok=True)
+    with open("logs/recon_log.txt", "w"):
         pass
+
+    start_message = f"{datetime.now()} Recon Engaged..."
+    print(start_message)
+
+    with open("logs/recon_log.txt", "a") as log:
+        log.write(start_message + "\n")
 
     next_check = monotonic()
     last_change = {name: next_check for name in config.FEEDS}
     etags = {}
 
-    start_message = f"{datetime.now()} Recon Engaged..."
-    print(start_message)
-
-    with open("recon_log.txt", "a") as log:
-        log.write(start_message + "\n")
-
     with ThreadPoolExecutor(max_workers=len(config.FEEDS)) as executor:
         while True:
+
             results = executor.map(
                 lambda feed: check_feed(feed, etags, last_change),
                 config.FEEDS.items()
@@ -29,9 +32,10 @@ def main():
 
             for result in results:
                 if result:
+
                     print(result)
 
-                    with open("recon_log.txt", "a") as log:
+                    with open("logs/recon_log.txt", "a") as log:
                         log.write(result + "\n")
 
             next_check += config.INTERVAL
@@ -62,10 +66,7 @@ def check_feed(feed, etags, last_change):
         elapsed = now - last_change[name]
         last_change[name] = now
 
-        return (
-            f"{datetime.now()} "
-            f"{name} changed after {elapsed:.3f}s"
-        )
+        return (f"{datetime.now()} {name} changed after {elapsed:.3f}s")
 
     except requests.RequestException as e:
         return f"{name} failed: {e}"

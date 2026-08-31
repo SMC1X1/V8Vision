@@ -11,5 +11,4 @@ src/__pycache__
 misc/
 
 replay/
-record_log.txt
-recon_log.txt
+logs/

@@ -8,7 +8,9 @@ from src import config
 
 
 def main():
-    etags = {}
+    makedirs("logs", exist_ok=True)
+    with open("logs/record_log.txt", "w"):
+        pass
 
     for name in config.FEEDS:
         makedirs(
@@ -16,39 +18,25 @@ def main():
             exist_ok=True
         )
 
-    with open("record_log.txt", "w") as log:
-        pass
-
-    count = 1
     next_check = monotonic()
+    count = 1
+    etags = {}
 
-    with ThreadPoolExecutor(
-        max_workers=len(config.FEEDS)
-    ) as executor:
-
+    with ThreadPoolExecutor(max_workers=len(config.FEEDS)) as executor:
         while True:
-            timestamp = datetime.now()
 
             results = executor.map(
-                lambda feed: download_feed(
-                    feed,
-                    etags,
-                    count
-                ),
+                lambda feed: download_feed(feed, etags, count),
                 config.FEEDS.items()
             )
 
             for result in results:
                 if result:
-                    print(f"{timestamp} {result}")
 
-                    with open(
-                        "record_log.txt",
-                        "a"
-                    ) as log:
-                        log.write(
-                            f"{timestamp} {result}\n"
-                        )
+                    print(result)
+
+                    with open("logs/record_log.txt", "a") as log:
+                        log.write(f"{result}\n")
 
             count += 1
             next_check += config.INTERVAL
@@ -59,19 +47,12 @@ def main():
 
 def download_feed(feed, etags, count):
     name, url = feed
-
     etag = etags.get(name)
 
     try:
-        headers = (
-            {"If-None-Match": etag}
-            if etag
-            else {}
-        )
-
         response = requests.get(
             url,
-            headers=headers,
+            headers={"If-None-Match": etag},
             timeout=10
         )
 
@@ -89,7 +70,7 @@ def download_feed(feed, etags, count):
         ) as file:
             file.write(data)
 
-        return f"Saved {name} snapshot {count}"
+        return f"{datetime.now()} Saved {name} snapshot {count}"
 
     except requests.RequestException as e:
         return f"{name} failed: {e}"

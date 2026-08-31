@@ -29,13 +29,17 @@ Checks for changes in the feeds without downloading. [Developmental Tool]
 
 ## Getting Started
 
-* When run, the .EXE will make a replay folder and logs in its directory.
+* When run, the .EXE will make folders for replay and logs.
 
 * A .ZIP with sample race replay is optional.
 
 * Press Enter at any time to return to the main menu.
 
 ## Version History
+
+### v0.4
+   * Uniformity between record and recon files.
+   * Addition of logs folder.
 
 ### v0.3
    * Overhaul of code structure and formatting within each file.
