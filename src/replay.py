@@ -16,15 +16,13 @@ def main(race_id, lap_option, stop_event, ready_event):
     
             if exists(source):
                 copyfile(source, destination)
-    
-        ready_event.set()
+
+        if not ready_event.set():
+            ready_event.set()
 
         count += 1
         next_check += config.INTERVAL
 
         wait_time = max(0, next_check - monotonic())
-
-        if stop_event.is_set():
-            return
 
         stop_event.wait(wait_time)

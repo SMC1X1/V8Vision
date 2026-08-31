@@ -40,6 +40,7 @@ def main(live, race_id, lap_option):
                 next_check += config.INTERVAL
 
                 if config.sleeper(next_check - monotonic()):
+                    stop_event.set()
                     return
 
                 continue
@@ -96,8 +97,13 @@ def print_leaderboard(live_feed):
     print_header(live_feed)
     print_table_header()
 
+    best_overall = min(
+        vehicle["best_lap_time"]
+        for vehicle in live_feed["vehicles"]
+    )
+
     for vehicle in live_feed["vehicles"]:
-        print_vehicle(vehicle)
+        print_vehicle(vehicle, best_overall)
 
 
 def print_header(live_feed):
@@ -134,16 +140,16 @@ def print_table_header():
     print(
         f"{'POS':<5}"
         f"{'NUM':<5}"
-        f"{'NAME':<15}"
-        f"{' DELTA':<8}"
-        f"{' LAST':<8}"
-        f"{'PIT':<5}"
-        f"{'   BEST':<12}"
+        f"{'NAME':<16}"
+        f"{'DELTA':<8}"
+        f"{'LAST':<7}"
+        f"{'PIT':<9}"
+        f"{'BEST':<9}"
         f"{'SPONSOR'}\n"
     )
 
 
-def print_vehicle(vehicle):
+def print_vehicle(vehicle, best_overall):
     delta_display = format_delta(vehicle)
 
     color = "\033[90m" if vehicle["status"] != 1 else ""
@@ -172,6 +178,7 @@ def print_vehicle(vehicle):
         f"{delta_display:<8}"
         f"{vehicle['last_lap_time']:<8.3f}"
         f"{pit_lap:<5}"
+        f"{'*' if vehicle['best_lap_time'] == best_overall else ' ':<1}"
         f"{vehicle['best_lap_time']:<6.3f}|"
         f"{vehicle['best_lap']:<5}"
         f"{vehicle['sponsor_name']:<8}"

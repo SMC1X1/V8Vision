@@ -37,6 +37,10 @@ Checks for changes in the feeds without downloading. [Developmental Tool]
 
 ## Version History
 
+### v0.5
+   * Best overall lap is highlighted by an asterisk.
+   * Replay threads stop correctly.
+
 ### v0.4
    * Uniformity between record and recon files.
    * Addition of logs folder.
