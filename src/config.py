@@ -59,30 +59,6 @@ FEEDS = {
 
     "weekend-feed":
         f"{BASE_URL}/cacher/{year}/{series_id}/{race_id}/weekend-feed.json",
-
-    "points-feed":
-        f"{BASE_URL}/cacher/{year}/{series_id}/points-feed.json",
-
-    "owners-points":
-        f"{BASE_URL}/cacher/{year}/{series_id}/final/{series_id}-owners-points.json",
-
-    "loop-stats":
-        f"{BASE_URL}/loopstats/prod/{year}/{series_id}/{race_id}.json",
-
-    "schedule":
-        f"{BASE_URL}/cacher/{year}/race_list_basic.json",
-
-    "live-ops":
-        f"{BASE_URL}/live-ops/live-ops.json",
-
-    "audio-mapping":
-        f"{BASE_URL}/config/audio/audio_mapping_{series_id}_3.json",
-
-    "runs":
-        f"{BASE_URL}/cacher/{year}/{series_id}/{race_id}/runs.json",
-
-    "ncs":
-        f"{BASE_URL}/racing-insights/raw-feed/{race_id}-NCS.json"
 }
 
 def sleeper(duration):

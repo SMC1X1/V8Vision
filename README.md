@@ -1,6 +1,6 @@
 # V8Vision
 
-Live NASCAR dashboard that runs in the console.
+Live NASCAR dashboard that displays in a terminal and records/replays snapshots of the public-facing API.
 
 ## Screenshots
 
@@ -25,7 +25,7 @@ Records all available feeds so the data can be replayed to simulate a live race 
 
 ### Recon
 
-Checks for changes in the feeds without downloading. [Developmental Tool]
+Checks for changes in the feeds without downloading.
 
 ## Getting Started
 
@@ -36,6 +36,12 @@ Checks for changes in the feeds without downloading. [Developmental Tool]
 * Press Enter at any time to return to the main menu.
 
 ## Version History
+
+### v1.0
+   * Development shifting toward GUI and analysis of data acquired with this tool.
+   * Delisted feeds that show data irrelevant to live race records.
+   * Replay mode lap selection works for all feeds.
+   * Fixed crash if live feed is not populated.
 
 ### v0.5
    * Best overall lap is highlighted by an asterisk.

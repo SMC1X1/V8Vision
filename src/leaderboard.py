@@ -94,8 +94,13 @@ def get_replay_feed(race_id):
 
 
 def print_leaderboard(live_feed):
+    
     print_header(live_feed)
     print_table_header()
+
+    if not live_feed["vehicles"]:
+        print("\nNo live race data...")
+        return
 
     best_overall = min(
         vehicle["best_lap_time"]
